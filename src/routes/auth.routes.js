@@ -10,6 +10,7 @@ const router = Router();
 //TODO: Eliminar contraseña de los resultados desde la base de datos
 router.post('/auth', async(req = request, res = response) => {
     let body = req.body;
+    console.log(body);
     const response = await pool.query(`
         SELECT * From tb_usuario 
         where tb_usuario_con = '` + body.password + 
@@ -34,7 +35,7 @@ router.post('/auth', async(req = request, res = response) => {
     } else {
         return res.status(400).json({
             "ok": false,
-            "messaje": "datos incorrectos"
+            "message": "datos incorrectos"
         })
     }
 
@@ -43,6 +44,7 @@ router.post('/auth', async(req = request, res = response) => {
 router.post('/ip', async(req = request, res = response) => {
 
     let body = req.body;
+    console.log(body);
     const response = await pool.query(`
         SELECT * From tb_fd_puntodespacho 
         where tb_puntodespacho_anf::text = '{"hostname":"` + body.hostname+ `"}'
@@ -51,7 +53,7 @@ router.post('/ip', async(req = request, res = response) => {
     if(response.rowCount > 0 ){
         res.status(200).json({
             "ok": true,
-            "result": {
+            "despacth": {
                 "id": response.rows[0]["tb_puntodespacho_id"],
                 "cod": response.rows[0]["tb_puntodespacho_cod"] ,
                 "name": response.rows[0]["tb_puntodespacho_nom"],
@@ -61,7 +63,7 @@ router.post('/ip', async(req = request, res = response) => {
     } else {
         return res.status(400).json({
             "ok": false,
-            "messaje": "Usuario no disponible"
+            "message": "Usuario no disponible"
         })
     }
 

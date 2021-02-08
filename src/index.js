@@ -9,11 +9,10 @@ const app = express();
 //CORS
 app.use(express.json());
 
-
 //Rutas
 app.use(require('./routes/index.routes'));
 
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT,'0.0.0.0', () => {
     console.log('Servidor corriendo en puerto: ', process.env.PORT);
 });

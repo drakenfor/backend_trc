@@ -18,22 +18,22 @@ router.get('/:id', async(req = request, res = response) => {
         `ORDER BY tb_isla_id`
         );
 
-    let mangueras = response.rows;
+    let hoses = response.rows;
 
-    if(mangueras.length > 0 ){
+    if(hoses.length > 0 ){
 
         let islas = [];
 
-        let length = mangueras[mangueras.length - 1]['tb_isla_id'];
+        let length = hoses[hoses.length - 1]['tb_isla_id'];
 
         for (let index = 1; index <= length; index++) {
             let isla = {
                 "id": index,
-                "mangueras": []
+                "hoses": []
             }
-            mangueras.forEach((element) => {
+            hoses.forEach((element) => {
                 if (element['tb_isla_id'] === index ){
-                    isla['mangueras'].push({
+                    isla['hoses'].push({
                         "etiqueta": element['tb_manguera_eti'],
                         "operation": element['tb_manguera_ope']
                     });

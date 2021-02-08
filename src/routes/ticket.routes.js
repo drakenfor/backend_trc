@@ -21,8 +21,6 @@ router.get('/:id', async(req = request, res = response) => {
         WHERE tb_valedespacho_id = ` + params['id']
     );
 
-    console.log(response.rows[0]);
-
     if (response.rowCount > 0){
 
         let ticket = response.rows[0];
@@ -30,7 +28,7 @@ router.get('/:id', async(req = request, res = response) => {
             "ok": true,
             "ticket": {
                 "id": params['id'],
-                "serie": ticket['tb_valedespacho_numser'],
+                "serie": ticket['tb_valedespacho_numser']+ '-' + ticket['tb_valedespacho_numcor'],
                 "emitionDate": ticket['tb_valedespacho_fechoremi'],
                 "reference": ticket['tb_valedespacho_ref'],
                 "conductor": ticket['tb_conductor_apenom'],
