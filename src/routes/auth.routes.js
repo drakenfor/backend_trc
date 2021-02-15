@@ -43,6 +43,8 @@ router.post('/auth', async(req = request, res = response) => {
 
 router.post('/ip', async(req = request, res = response) => {
 
+    console.log(req.body);
+
     let body = req.body;
     const response = await pool.query(`
         SELECT * 
@@ -61,8 +63,8 @@ router.post('/ip', async(req = request, res = response) => {
             }
         });
     } else {
-        return res.status(400).json({
-            "ok": false,
+        return res.json({
+            "ok": true,
             "message": "Usuario no disponible"
         })
     }
