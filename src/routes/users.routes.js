@@ -10,7 +10,7 @@ const router = Router();
 router.get ('/', async(req = request, res = response) => {
     const response = await pool.query(`
         SELECT tb_usuario_corele, tb_usuario_nic 
-        FROM tb_usuario 
+        FROM sh_empresa_20132062448.tb_usuario 
         WHERE tb_usuario_est = 'A' 
         AND tb_usuario_tip = 'O'
     `);

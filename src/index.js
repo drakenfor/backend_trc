@@ -13,6 +13,6 @@ app.use(express.json());
 app.use(require('./routes/index.routes'));
 
 
-app.listen(process.env.PORT,'0.0.0.0', () => {
-    console.log('Servidor corriendo en puerto: ', process.env.PORT);
+app.listen(process.env.PORT, process.env.HOST, () => {
+    console.log('Servidor corriendo en : ', process.env.HOST, ':', process.env.PORT);
 });

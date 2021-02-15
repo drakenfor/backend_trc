@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express();
 
+app.use('/comprobante', require('./controller.routes'));
 app.use('/login', require('./auth.routes'));
 app.use('/gas', require('./gas.routes'))
 app.use('/ticket', require('./ticket.routes'));

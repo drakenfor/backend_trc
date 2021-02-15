@@ -14,10 +14,10 @@ router.get('/:id', async(req = request, res = response) => {
 
     const response  = await pool.query(`
         SELECT * 
-        FROM tb_fd_valedespacho
-        NATURAL JOIN tb_fd_vehiculo 
-        NATURAL JOIN tb_fd_conductor
-        NATURAL JOIN tb_fd_combustible
+        FROM sh_empresa_20132062448.tb_fd_valedespacho
+        NATURAL JOIN sh_empresa_20132062448.tb_fd_vehiculo 
+        NATURAL JOIN sh_empresa_20132062448.tb_fd_conductor
+        NATURAL JOIN sh_empresa_20132062448.tb_fd_combustible
         WHERE tb_valedespacho_id = ` + params['id']
     );
 
@@ -26,6 +26,8 @@ router.get('/:id', async(req = request, res = response) => {
         let ticket = response.rows[0];
         res.status(200).json({
             "ok": true,
+            "tik": ticket,
+
             "ticket": {
                 "id": params['id'],
                 "serie": ticket['tb_valedespacho_numser']+ '-' + ticket['tb_valedespacho_numcor'],
@@ -39,6 +41,8 @@ router.get('/:id', async(req = request, res = response) => {
                 "carga": ticket['tb_vehiculo_car'],
                 "type": ticket['tb_vehiculo_tip'],
                 "quantity": ticket['tb_valedespacho_can'],
+                "conductorId": ticket['tb_conductor_id'],
+                "vehicleId": ticket['tb_vehiculo_id'],
             }
         })
     } else {

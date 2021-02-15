@@ -7,13 +7,14 @@ const { Router } = require('express');
 const pool = require('../database/database.conection');
 const router = Router();
 
+//Mangueras por islas
 router.get('/:id', async(req = request, res = response) => {
     let id = req.params['id'];
 
     const response = await pool.query(`
         SELECT * 
-        FROM tb_fd_manguera
-        NATURAL JOIN tb_fd_isla
+        FROM sh_empresa_20132062448.tb_fd_manguera
+        NATURAL JOIN sh_empresa_20132062448.tb_fd_isla
         WHERE tb_fd_isla.tb_puntodespacho_id = ` + id + 
         `ORDER BY tb_isla_id`
         );
@@ -35,7 +36,9 @@ router.get('/:id', async(req = request, res = response) => {
                 if (element['tb_isla_id'] === index ){
                     isla['hoses'].push({
                         "etiqueta": element['tb_manguera_eti'],
-                        "operation": element['tb_manguera_ope']
+                        "operation": element['tb_manguera_ope'],
+                        "face": element['tb_manguera_numcar'],
+                        "number": element['tb_manguera_num'],
                     });
                 }
             });

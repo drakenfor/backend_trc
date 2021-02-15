@@ -10,9 +10,9 @@ const router = Router();
 //TODO: Eliminar contraseña de los resultados desde la base de datos
 router.post('/auth', async(req = request, res = response) => {
     let body = req.body;
-    console.log(body);
     const response = await pool.query(`
-        SELECT * From tb_usuario 
+        SELECT * 
+        FROM sh_empresa_20132062448.tb_usuario 
         where tb_usuario_con = '` + body.password + 
         `' and tb_usuario_corele = '`+ body.email + `'
     `);
@@ -44,9 +44,9 @@ router.post('/auth', async(req = request, res = response) => {
 router.post('/ip', async(req = request, res = response) => {
 
     let body = req.body;
-    console.log(body);
     const response = await pool.query(`
-        SELECT * From tb_fd_puntodespacho 
+        SELECT * 
+        FROM sh_empresa_20132062448.tb_fd_puntodespacho 
         where tb_puntodespacho_anf::text = '{"hostname":"` + body.hostname+ `"}'
     `);
 
