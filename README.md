@@ -1,6 +1,6 @@
 # Backend TRCScanner
-El backend del escanner siempre debe estar activo para que funcione la aplicación
-Movil, ya qu es necesario para que pueda realizar las peticiones
+El backend del Scanner siempre debe estar activo para que funcione la aplicación
+Mobil, ya que es necesario para que pueda realizar las peticiones
 
 ## 1. Reconstrucción de paquetes
 Para ejecutar estos comandos, asi como del paso 4 debe tener una consola o terminal
@@ -20,14 +20,14 @@ en la lista de archivos vaya al archio ``` .env ``` y encontrará lo siguiente
 * ```HOST``` host o ip del servidor
 
 Para configurar solo cambie lo que está despues del igual, caso contrario no funcionará
-por ejemlo: 
+por ejemlo:   
 ```PORT=3000```
-para cambiar de puerto si gusta a 4200 solo hace falta cambiar el número de la siguente manera
+para cambiar de puerto si gusta a 4200 solo hace falta cambiar el número de la siguente manera    
 ```PORT=4200```
 
 recomendable dejarlo por defecto
 
-## 3. Configurar la conexion a la base de datos
+## 3. Configurar la conexión a la base de datos
 en el mismo archivo ```.env``` se encuentra lo siguiente
 
 * ```HOST_DB``` Host de la base de datos
@@ -47,4 +47,4 @@ le debe aparecer un mensaje como este:
 
 ```Servidor corriendo en :  0.0.0.0 : 3000```
 
-## 2. Enjoy! 
+## 5. Enjoy! 
