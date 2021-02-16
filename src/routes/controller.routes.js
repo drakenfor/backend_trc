@@ -47,6 +47,8 @@ router.post('/', async(req = require, res = response) => {
     const combustibleId = controller['tb_combustible_id']
     const hoseId        = controller['tb_manguera_id']
 
+    console.log(String(interfaceDate).split('T'));
+
     const responseComp = await pool.query(`
         SELECT *
         FROM sh_empresa_20132062448.fn_fd_json_iud_row_comprobante(
