@@ -24,68 +24,74 @@ router.post('/', async(req = require, res = response) => {
     const ticketId    = body['ticketId'];
     const userId      = body['userId'];
 
-    const response = await pool.query(`
+    pool.query(`
         SELECT * 
         FROM sh_empresa_20132062448.fn_fd_select_comprobante_controlador(
             ` + numcar + `,`+ numman + `,` + despatchId + `,` + orden + `, 1, 0)`
-    ).catch((erro) => {
-        return res.status(400).json({
-            'ok': false,
-            'message': 'Error al obtener los datos del controlador',
-            error
-        })
+    , (error, responseController) => {
+        if(error){
+            return res.status.json({
+                ok: false,
+                message: "Error en db controller",
+                error
+            });
+        }
+
+        controller =  responseController.rows[0];
+
+        const opeman        = controller['tb_manguera_ope']
+        const condition     = 'E'
+        const cantidad      = controller['can']
+        const controllerId  = controller['idcontrolador']
+        const interfaceDate = new Date(controller['fechahoracontrolador'])
+        const computerDate  = new Date(controller['fechahorapc'])
+        const combustibleId = controller['tb_combustible_id']
+        const hoseId        = controller['tb_manguera_id']
+    
+        pool.query(`
+            SELECT *
+            FROM sh_empresa_20132062448.fn_fd_json_iud_row_comprobante(
+                'I',
+                NULL,
+                '` + numser        +`',
+                '` + numcor        +`',
+                NULL,
+                NULL,
+                '` + opeman        +`',
+                '` + condition     +`',
+                 ` + cantidad      +`,
+                 ` + controllerId  +`,
+                '` + interfaceDate.toLocaleDateString() + ' ' + interfaceDate.toLocaleTimeString() +`',
+                '` + computerDate.toLocaleDateString() + ' ' + computerDate.toLocaleTimeString() + `',
+                 ` + despatchId    +`,
+                 ` + conductorId   +`,
+                 ` + veihicleId     +`,
+                 ` + combustibleId +`,
+                 ` + hoseId        +`,
+                 ` + ticketId      +`,
+                 ` + userId        +`,
+                NULL
+            )
+        `, (error, responseComp) => {
+            if(error){
+                return res.status(400).json({
+                    ok: false,
+                    message: "El ticket ya a sido registrado",
+                });
+            }
+
+            return res.json({
+                ok: true,
+                message: 'Despacho finalizada con exíto',
+            })
+
+        });
+    
+        
+    
+
     });
 
-    controller =  response.rows[0];
-
-    const opeman        = controller['tb_manguera_ope']
-    const condition     = 'E'
-    const cantidad      = controller['can']
-    const controllerId  = controller['idcontrolador']
-    const interfaceDate = new Date(controller['fechahoracontrolador'])
-    const computerDate  = new Date(controller['fechahorapc'])
-    const combustibleId = controller['tb_combustible_id']
-    const hoseId        = controller['tb_manguera_id']
-
-    console.log(String(interfaceDate).split('T'));
-
-    const responseComp = await pool.query(`
-        SELECT *
-        FROM sh_empresa_20132062448.fn_fd_json_iud_row_comprobante(
-        	'I',
-        	NULL,
-        	'` + numser        +`',
-            '` + numcor        +`',
-            NULL,
-            NULL,
-            '` + opeman        +`',
-            '` + condition     +`',
-            ` + cantidad      +`,
-            ` + controllerId  +`,
-            '` + interfaceDate.getDay() + '/' + interfaceDate.getMonth() + '/' + interfaceDate.getFullYear() +`',
-            '` + computerDate.getDay() + '/' + computerDate.getMonth() + '/' + computerDate.getFullYear() + `',
-            ` + despatchId    +`,
-            ` + conductorId   +`,
-            ` + veihicleId     +`,
-            ` + combustibleId +`,
-            ` + hoseId        +`,
-            ` + ticketId      +`,
-            ` + userId        +`,
-            NULL
-        )
-    `).catch((error) => {
-        res.status(400).json({
-            'ok': false,
-            'message': 'El ticket ya a sido registrado',
-            error,
-        },);
-    });
-
-    res.json({
-        ok: true,
-        message: 'Venta finalizada con exíto',
-        response: responseComp,
-    })
 
 
 });

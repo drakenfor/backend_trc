@@ -14,5 +14,5 @@ app.use(require('./routes/index.routes'));
 
 
 app.listen(process.env.PORT, process.env.HOST, () => {
-    console.log('Servidor corriendo en : ', process.env.HOST, ':', process.env.PORT);
+    console.log('Servidor online en: ' + process.env.HOST + ':' + process.env.PORT);
 });

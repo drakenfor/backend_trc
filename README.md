@@ -45,6 +45,6 @@ npm start
 ```
 le debe aparecer un mensaje como este: 
 
-```Servidor corriendo en :  0.0.0.0 : 3000```
+```Servidor online en: 0.0.0.0:3000```
 
 ## 5. Enjoy! 
