@@ -21,6 +21,7 @@ router.post('/', async (req = require, res = response) => {
     const veihicleId  = body['veihicleId'];
     const ticketId    = body['ticketId'];
     const userId      = body['userId'];
+    let quantity      = body['quantity'];
 
     //Comprobar si ya se registro el ticket
     const response = await pool.query(`
@@ -56,12 +57,14 @@ router.post('/', async (req = require, res = response) => {
 
             const opeman        = controller['tb_manguera_ope']
             const condition     = 'E'
-            const cantidad      = controller['can']
             const controllerId  = controller['idcontrolador']
             const interfaceDate = new Date(controller['fechahoracontrolador'])
             const computerDate  = new Date(controller['fechahorapc'])
             const combustibleId = controller['tb_combustible_id']
             const hoseId        = controller['tb_manguera_id']
+            const cantidad      = quantity? quantity : controller['can'];
+
+            console.log('La cantidad es: '+cantidad);
     
             let numcor;
             let numser;
@@ -128,7 +131,7 @@ router.post('/', async (req = require, res = response) => {
                     if(error){
                         return res.status(500).json({
                             ok: false,
-                            message: "Error al registrar en db",
+                            message: "El Ticket no encontrado",
                             error
                         });
                     }
@@ -154,6 +157,61 @@ router.post('/', async (req = require, res = response) => {
 
     });
 
+});
+
+router.get('/:id/:quantity', (req = request, res = response) => {
+
+    const id = req.params['id'];
+    const quantity = req.params['quantity']
+
+    pool.query(`
+        SELECT *
+        FROM sh_empresa_20132062448.fn_fd_select_comprobante(
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            `+ id +`,
+            null,
+            null,
+            `+ quantity +`,
+            0
+        )
+    `, (error, vouchersDB) => {
+
+        if (error)
+            return res.status(500).json({
+                ok: false,
+                message: "Error al obtener la lista de vauchers",
+                error
+            });
+
+        vouchers = [];
+
+        vouchersDB.rows.forEach(voucher => {
+            vouchers.push({
+                hose: voucher['tb_manguera_eti'],
+                ticketId: voucher['tb_valedespacho_id'],
+                serie: voucher['tb_valedespacho_numser'],
+                correlative: voucher['tb_valedespacho_numcor'],
+                type: voucher['tb_vehiculo_tip'],
+                mark: voucher['tb_vehiculo_mar'],
+                placa: voucher['tb_vehiculo_numpla'],
+                driver: voucher['tb_conductor_apenom'],
+                quantity: voucher['tb_comprobante_can'],
+                fuel: voucher['tb_combustible_nom'],
+            });
+        });
+
+        return res.json({
+            ok: true,
+            vouchers
+        })
+
+        }
+    );
 });
 
 module.exports = router;
