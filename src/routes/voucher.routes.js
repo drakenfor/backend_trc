@@ -33,7 +33,7 @@ router.post('/', async (req = require, res = response) => {
     if (response.rows[0]['count'] > 0){
         return res.status(400).json({
             ok: false,
-            message: "Ticket ya está registrado"
+            message: "El Ticket ya está registrado"
         });
     }
 
@@ -131,7 +131,7 @@ router.post('/', async (req = require, res = response) => {
                     if(error){
                         return res.status(500).json({
                             ok: false,
-                            message: "El Ticket no encontrado",
+                            message: "Ticket no encontrado",
                             error
                         });
                     }
@@ -159,10 +159,10 @@ router.post('/', async (req = require, res = response) => {
 
 });
 
-router.get('/:id/:quantity', (req = request, res = response) => {
+router.get('/:id/:rows', (req = request, res = response) => {
 
     const id = req.params['id'];
-    const quantity = req.params['quantity']
+    const rows = req.params['rows']
 
     pool.query(`
         SELECT *
@@ -176,7 +176,7 @@ router.get('/:id/:quantity', (req = request, res = response) => {
             `+ id +`,
             null,
             null,
-            `+ quantity +`,
+            `+ rows +`,
             0
         )
     `, (error, vouchersDB) => {
@@ -202,8 +202,18 @@ router.get('/:id/:quantity', (req = request, res = response) => {
                 driver: voucher['tb_conductor_apenom'],
                 quantity: voucher['tb_comprobante_can'],
                 fuel: voucher['tb_combustible_nom'],
+                unity: voucher['tb_combustible_unimed'],
             });
         });
+
+        if (vouchers.length === 0){
+            return res.json(
+                {
+                    ok: false,
+                    message: 'Aun no hay vouchers registrados :c'
+                }
+            )
+        }
 
         return res.json({
             ok: true,
