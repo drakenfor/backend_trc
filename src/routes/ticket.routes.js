@@ -8,11 +8,11 @@ const router = Router();
 
 
 //obtener ticket
-router.get('/:id', async(req = request, res = response) => {
+router.get('/:id', (req = request, res = response) => {
 
     params = req.params
 
-    const response  = await pool.query(`
+    pool.query(`
         SELECT * 
         FROM sh_empresa_20132062448.tb_fd_valedespacho
         NATURAL JOIN sh_empresa_20132062448.tb_fd_vehiculo 
