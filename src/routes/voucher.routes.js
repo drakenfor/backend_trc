@@ -33,7 +33,7 @@ router.post('/', async (req = require, res = response) => {
     if (response.rows[0]['count'] > 0){
         return res.status(400).json({
             ok: false,
-            message: "El Ticket ya está registrado"
+            message: "El vale de despacho ya se registró"
         });
     }
 
@@ -44,12 +44,10 @@ router.post('/', async (req = require, res = response) => {
         AND tb_valedespacho_id = `+ ticketId
     );
 
-    console.log(response);
-
     if(response.rowCount > 0 ){
         return res.status(400).json({
             ok: false,
-            message: "El Titcket está dado de baja"
+            message: "Valde de despacho está dado de baja."
         });
     }
 
@@ -82,8 +80,6 @@ router.post('/', async (req = require, res = response) => {
             const combustibleId = controller['tb_combustible_id']
             const hoseId        = controller['tb_manguera_id']
             const cantidad      = quantity? quantity : controller['can'];
-
-            console.log('La cantidad es: '+cantidad);
     
             let numcor;
             let numser;
@@ -105,7 +101,7 @@ router.post('/', async (req = require, res = response) => {
                 if (error){
                     return res.status(400).json({
                         ok: false,
-                        message: "Error db al obtener correlativo",
+                        message: "Error db al obtener correlativo.",
                     });
                 }
                 
@@ -150,14 +146,14 @@ router.post('/', async (req = require, res = response) => {
                     if(error){
                         return res.status(500).json({
                             ok: false,
-                            message: "Ticket no encontrado",
+                            message: "Vale de despacho no encontrado.",
                             error
                         });
                     }
                 
                     return res.json({
                         ok: true,
-                        message: 'Despacho finalizada con exíto',
+                        message: 'Despacho finalizada con exíto.',
                     })
                 
                 });
@@ -169,7 +165,7 @@ router.post('/', async (req = require, res = response) => {
 
             return res.status(400).json({
                 ok: false,
-                message: "No hay datos en el controlador"
+                message: "No hay datos en el controlador."
             });
         }
 
@@ -203,11 +199,12 @@ router.get('/:id/:rows', (req = request, res = response) => {
         if (error)
             return res.status(500).json({
                 ok: false,
-                message: "Error al obtener la lista de vauchers",
+                message: "Error al obtener la lista de vauchers.",
                 error
             });
 
         vouchers = [];
+
 
         vouchersDB.rows.forEach(voucher => {
             vouchers.push({
@@ -222,6 +219,7 @@ router.get('/:id/:rows', (req = request, res = response) => {
                 quantity: voucher['tb_comprobante_can'],
                 fuel: voucher['tb_combustible_nom'],
                 unity: voucher['tb_combustible_unimed'],
+                condition: voucher['tb_comprobante_con'],
             });
         });
 
@@ -229,7 +227,7 @@ router.get('/:id/:rows', (req = request, res = response) => {
             return res.json(
                 {
                     ok: false,
-                    message: 'Aun no hay vouchers registrados :c'
+                    message: 'Aun no hay vales de despacho antendidos.'
                 }
             )
         }

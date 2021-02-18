@@ -54,7 +54,7 @@ router.get('/:id', (req = request, res = response) => {
 
         return res.status(400).json({
             ok: false,
-            message: "Ticket no encontrado"
+            message: "Vale de despacho no encontrado"
         });
 
     });
