@@ -24,7 +24,7 @@ router.post('/', async (req = require, res = response) => {
     let quantity      = body['quantity'];
 
     //Comprobar si ya se registro el ticket
-    const response = await pool.query(`
+    let response = await pool.query(`
         SELECT count(*)
         FROM sh_empresa_20132062448.tb_fd_comprobante
         WHERE tb_valedespacho_id=` + ticketId
@@ -36,6 +36,25 @@ router.post('/', async (req = require, res = response) => {
             message: "El Ticket ya está registrado"
         });
     }
+
+    response = await pool.query(`
+        SELECT * 
+        FROM sh_empresa_20132062448.tb_fd_valedespacho
+        WHERE tb_valedespacho_con = 'B' 
+        AND tb_valedespacho_id = `+ ticketId
+    );
+
+    console.log(response);
+
+    if(response.rowCount > 0 ){
+        return res.status(400).json({
+            ok: false,
+            message: "El Titcket está dado de baja"
+        });
+    }
+
+    
+
 
     pool.query(`
         SELECT * 

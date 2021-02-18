@@ -86,7 +86,7 @@ router.post('/ip', async(req = request, res = response) => {
                     "name": response.rows[0]["tb_puntodespacho_nom"],
                     "hostname": response.rows[0]["tb_puntodespacho_anf"]["hostname"]
                 }
-            });
+            },);
         }
 
         return res.status(400).json({
