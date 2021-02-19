@@ -1,4 +1,4 @@
-TRC Scanner
+# TRC Scanner
 ## I. Backend TRCScanner
 El backend del Scanner siempre debe estar activo para que funcione la aplicación
 Mobil, ya que es necesario para que pueda realizar las peticiones
@@ -60,4 +60,4 @@ usted puede coger ```74f76c7066cb881c``` y poner en su base de datos, luego inic
 ### 4. Haga click en su nombre de usuario y esto lo llevará a una página donde pondra su contraseña
 ### 5. Una vez iniciado cesión le aparecerá los Comprantes de pago ya hehco previamente o vacío si es que no hay ninguno, para iniciar uno nuevo precione el boton ```+```
 
-# III. Enjoy!
+## III. Enjoy!
