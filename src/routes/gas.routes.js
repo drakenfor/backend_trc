@@ -46,6 +46,7 @@ router.get('/:id', async(req = request, res = response) => {
                                 "operation": element['tb_manguera_ope'],
                                 "face": element['tb_manguera_numcar'],
                                 "number": element['tb_manguera_num'],
+                                "id": element['tb_manguera_id']
                             });
                         }
                     });

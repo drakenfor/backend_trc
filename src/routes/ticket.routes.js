@@ -13,12 +13,17 @@ router.get('/:id', (req = request, res = response) => {
     params = req.params
 
     pool.query(`
-        SELECT * 
-        FROM sh_empresa_20132062448.tb_fd_valedespacho
-        NATURAL JOIN sh_empresa_20132062448.tb_fd_vehiculo 
-        NATURAL JOIN sh_empresa_20132062448.tb_fd_conductor
-        NATURAL JOIN sh_empresa_20132062448.tb_fd_combustible
-        WHERE tb_valedespacho_id = ` + params['id']
+    select * from sh_empresa_20132062448.fn_fd_select_valedespacho(
+        `+ params['id'] +`,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        0
+    )`
     , (error, response)=>{
         if(error){
             return res.status(500).json({
@@ -27,8 +32,11 @@ router.get('/:id', (req = request, res = response) => {
                 error
             });
         }
-
+        
         if (response.rowCount > 0){
+
+            const date = new Date(response.rows[0]['tb_valedespacho_fechoremi']);
+            const local = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDay() + ' ' + date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
 
             let ticket = response.rows[0];
             return res.status(200).json({
@@ -36,7 +44,7 @@ router.get('/:id', (req = request, res = response) => {
                 ticket: {
                     "id": params['id'],
                     "serie": ticket['tb_valedespacho_numser']+ '-' + ticket['tb_valedespacho_numcor'],
-                    "emitionDate": ticket['tb_valedespacho_fechoremi'],
+                    "emitionDate": local,
                     "reference": ticket['tb_valedespacho_ref'],
                     "conductor": ticket['tb_conductor_apenom'],
                     "combusiteble": ticket['tb_combustible_nom'],
@@ -48,13 +56,14 @@ router.get('/:id', (req = request, res = response) => {
                     "quantity": ticket['tb_valedespacho_can'],
                     "conductorId": ticket['tb_conductor_id'],
                     "vehicleId": ticket['tb_vehiculo_id'],
+                    "combustibleId": ticket['tb_combustible_id'],
                 }
             })
         }
 
         return res.status(400).json({
             ok: false,
-            message: "Vale de despacho no encontrado"
+            message: "Vale de despacho no encontrado."
         });
 
     });
