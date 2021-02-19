@@ -49,15 +49,20 @@ le debe aparecer un mensaje como este:
 ```Servidor online en: 0.0.0.0:3000```
 
 ## II. APP Movil
-### 1. Instale la aplicación, dando los permisos necesarios.
-### 2. Haga click en el engranage y configure el host del servidor, El Adroid id: es el identificador unico del teléfono el cual deberá ponerlo en su base de datos, en el punto de despacho en ```hostname```
-### 3. Si hace click en iniciar le aparecera en el backend un mensaje similar a este    
+### 1. Instale la aplicación
+Usted debe otorgar los permisos necesarios.
+### 2. Configure su conexión
+Haga click en el engranage y configure el host del servidor, El Adroid id: es el identificador unico del teléfono el cual deberá ponerlo en su base de datos, en el punto de despacho en ```hostname```
+### 3. Compruebe si su dispositivo esta disponible
+Si hace click en iniciar le aparecera en el backend un mensaje similar a este    
 ```
 { hostname: '74f76c7066cb881c' }
 ```
 usted puede coger ```74f76c7066cb881c``` y poner en su base de datos, luego iniciar
 
-### 4. Haga click en su nombre de usuario y esto lo llevará a una página donde pondra su contraseña
-### 5. Una vez iniciado cesión le aparecerá los Comprantes de pago ya hehco previamente o vacío si es que no hay ninguno, para iniciar uno nuevo precione el boton ```+```
+### 4. Inicie seción
+Si su dispositivo es admitido lo llevará a la siguiete página, haga click en su nombre de usuario y esto lo llevará a una página donde pondra su contraseña
+### 5. Un nuevo Scanneo de Vale de despacho
+Una vez iniciado cesión le aparecerá los Comprantes de pago ya hehco previamente o vacío si es que no hay ninguno, para iniciar uno nuevo precione el boton ```+```
 
 ## III. Enjoy!
