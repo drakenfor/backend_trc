@@ -65,9 +65,6 @@ router.post('/', async (req = require, res = response) => {
 
                 fDate = "'"+interfaceDate.toLocaleDateString() + " " + interfaceDate.toLocaleTimeString() + "'";
                 cDate  = "'"+computerDate.toLocaleDateString() + " " + computerDate.toLocaleTimeString() + "'";
-                
-                console.log(fDate);
-                console.log(cDate);
             
             } else{ //TODO: ver por que dá error
         
