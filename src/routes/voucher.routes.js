@@ -42,37 +42,10 @@ router.post('/', async (req = require, res = response) => {
             });
         }
     }
-            
-    //Comprobar si ya se registro el ticket
-    let response = await pool.query(`
-        SELECT count(*)
-        FROM sh_empresa_20132062448.tb_fd_comprobante
-        WHERE tb_valedespacho_id=` + ticketId
-    );
-    
-    if (response.rows[0]['count'] > 0){
-        return res.status(400).json({
-            ok: false,
-            message: "El vale de despacho ya fue antendido."
-        });
-    }
-    
-    response = await pool.query(`
-        SELECT * 
-        FROM sh_empresa_20132062448.tb_fd_valedespacho
-        WHERE tb_valedespacho_con = 'B' 
-        AND tb_valedespacho_id = `+ ticketId
-    );
-    
-    if(response.rowCount > 0 ){
-        return res.status(400).json({
-            ok: false,
-            message: "Valde de despacho está dado de baja."
-        });
-    }
     
     let responseController;
 
+    //TODO: Se puede eliminar esta parte
     if(opeman === 'C'){
         try {
             responseController = await pool.query(`
@@ -100,7 +73,7 @@ router.post('/', async (req = require, res = response) => {
         
                 return res.status(400).json({
                     ok: false,
-                    message: "No hay datos en el controlador."
+                    message: "Manguera sin datos en el controlador."
                 });
             }
                         
@@ -112,10 +85,6 @@ router.post('/', async (req = require, res = response) => {
             });
         }
     }
-    
-    
-    
-
 
     let numcor;
     let numser;
@@ -264,6 +233,48 @@ router.get('/:id/:rows', (req = request, res = response) => {
 
         }
     );
+});
+
+router.post('/controller', async(req = request, res = response) => {
+
+        const body = req.body;
+        const numcar        = body['numcar'];
+        const numman        = body['numman'];
+        const despatchId    = body['despatchId']
+
+        //TODO: Se puede eliminar esta parte
+        try {
+            responseController = await pool.query(`
+            SELECT can 
+            FROM sh_empresa_20132062448.fn_fd_select_comprobante_controlador(
+                ` + numcar + `,`+ numman + `,` + despatchId + `,` + null + `, 1, 0
+                )`
+                ,);
+            
+            if (responseController.rowCount > 0 ){
+                const controller =  responseController.rows[0];
+
+                return res.json({
+                    ok: true,
+                    quantity: controller['can']
+                });
+
+            } else{ //TODO: ver por que dá error
+        
+                return res.status(400).json({
+                    ok: false,
+                    message: "No hay datos en el controlador."
+                });
+            }
+                        
+        } catch (error) {
+            return res.status(500).json({
+                ok: false,
+                message: "Error en db controller.",
+                error
+            });
+        }
+
 });
 
 module.exports = router;

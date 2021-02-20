@@ -8,9 +8,41 @@ const router = Router();
 
 
 //obtener ticket
-router.get('/:id', (req = request, res = response) => {
+router.get('/:id', async(req = request, res = response) => {
 
     params = req.params
+
+        // --- Comprobar si ya se registro el ticket
+    
+    let response = await pool.query(`
+        SELECT count(*)
+        FROM sh_empresa_20132062448.tb_fd_comprobante
+        WHERE tb_valedespacho_id=` + params['id']
+    );
+    
+    if (response.rows[0]['count'] > 0){
+        return res.status(400).json({
+            ok: false,
+            message: "El vale de despacho ya fue antendido."
+        });
+    }
+
+
+    // --- Ver si el vale de despacho esta dado de baja
+    
+    response = await pool.query(`
+        SELECT * 
+        FROM sh_empresa_20132062448.tb_fd_valedespacho
+        WHERE tb_valedespacho_con = 'B' 
+        AND tb_valedespacho_id = `+ params['id']
+    );
+    
+    if(response.rowCount > 0 ){
+        return res.status(400).json({
+            ok: false,
+            message: "Vale de despacho está dado de baja."
+        });
+    }
 
     pool.query(`
     select * from sh_empresa_20132062448.fn_fd_select_valedespacho(
@@ -36,7 +68,7 @@ router.get('/:id', (req = request, res = response) => {
         if (response.rowCount > 0){
 
             const date = new Date(response.rows[0]['tb_valedespacho_fechoremi']);
-            const local = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDay() + ' ' + date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+            const local =date.toLocaleDateString() + ' ' +date.toLocaleTimeString();
 
             let ticket = response.rows[0];
             return res.status(200).json({
